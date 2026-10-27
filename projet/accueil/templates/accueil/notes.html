@@ -1,0 +1,46 @@
+{% extends 'accueil/base.html' %}
+
+{% block title %}
+Liste des notes
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Notes</h1>
+        <p>Liste de toutes les notes enregistrées</p>
+    </div>
+    <a href="{% url 'ajouter_note' %}" class="btn-add">+ Ajouter une note</a>
+</div>
+
+<div class="table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Élève</th>
+                <th>Matière</th>
+                <th>Trimestre</th>
+                <th>Note</th>
+                <th>Année</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for n in notes %}
+            <tr>
+                <td>{{ n.eleve }}</td>
+                <td>{{ n.matiere }}</td>
+                <td>T{{ n.trimestre }}</td>
+                <td>{{ n.note }}/20</td>
+                <td>{{ n.annee_scolaire }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align:center;">Aucune note enregistrée</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

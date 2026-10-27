@@ -1,0 +1,201 @@
+```html
+{% extends 'accueil/base.html' %}
+
+{% load static %}
+
+{% block title %}
+Ajouter un élève
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Ajouter un élève</h1>
+        <p>Enregistrer un nouvel élève</p>
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+
+            <!-- MATRICULE -->
+
+            <div class="form-group">
+
+                <label for="matricule">
+                    Matricule
+                </label>
+
+                <input
+                    type="text"
+                    id="matricule"
+                    name="matricule"
+                    placeholder="Ex : ELV001"
+                    required
+                >
+
+            </div>
+
+
+            <!-- NOM -->
+
+            <div class="form-group">
+
+                <label for="nom">
+                    Nom
+                </label>
+
+                <input
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    placeholder="Nom"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PRENOM -->
+
+            <div class="form-group">
+
+                <label for="prenom">
+                    Prénom
+                </label>
+
+                <input
+                    type="text"
+                    id="prenom"
+                    name="prenom"
+                    placeholder="Prénom"
+                    required
+                >
+
+            </div>
+
+
+            <!-- SEXE -->
+
+            <div class="form-group">
+
+                <label for="sexe">
+                    Sexe
+                </label>
+
+                <select
+                    id="sexe"
+                    name="sexe"
+                    required
+                >
+
+                    <option value="">
+                        Choisir
+                    </option>
+
+                    <option value="M">
+                        Masculin
+                    </option>
+
+                    <option value="F">
+                        Féminin
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DATE DE NAISSANCE -->
+
+            <div class="form-group">
+
+                <label for="date_naissance">
+                    Date de naissance
+                </label>
+
+                <input
+                    type="date"
+                    id="date_naissance"
+                    name="date_naissance"
+                >
+
+            </div>
+
+
+            <!-- CLASSE -->
+
+            <div class="form-group">
+
+                <label for="classe">
+                    Classe
+                </label>
+
+                <select
+                    id="classe"
+                    name="classe"
+                    required
+                >
+
+                    <option value="">
+                        Choisir une classe
+                    </option>
+
+                    {% for classe in classes %}
+
+                        <option value="{{ classe.id }}">
+                            {{ classe.nom }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'liste_eleves' %}"
+                class="btn-cancel"
+            >
+                Annuler
+            </a>
+
+
+            <button
+                type="submit"
+                class="btn-save"
+            >
+                Enregistrer
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+```

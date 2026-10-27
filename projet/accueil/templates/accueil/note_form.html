@@ -1,0 +1,71 @@
+{% extends 'accueil/base.html' %}
+
+{% block title %}
+Ajouter une note
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Ajouter une note</h1>
+        <p>Saisir une nouvelle note</p>
+    </div>
+</div>
+
+{% if erreur %}
+<div style="background:#fee;color:#c00;padding:12px;border-radius:6px;margin-bottom:16px;">
+    {{ erreur }}
+</div>
+{% endif %}
+
+<div class="form-card">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="eleve">Élève</label>
+                <select name="eleve" id="eleve" required>
+                    <option value="">-- Choisir --</option>
+                    {% for e in eleves %}
+                    <option value="{{ e.id }}">{{ e.matricule }} - {{ e.nom }} {{ e.prenom }} ({{ e.classe }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="matiere">Matière</label>
+                <select name="matiere" id="matiere" required>
+                    <option value="">-- Choisir --</option>
+                    {% for m in matieres %}
+                    <option value="{{ m.id }}">{{ m.code }} - {{ m.nom }} ({{ m.classe }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="trimestre">Trimestre</label>
+                <select name="trimestre" id="trimestre" required>
+                    <option value="1">1er Trimestre</option>
+                    <option value="2">2ème Trimestre</option>
+                    <option value="3">3ème Trimestre</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="note">Note (/20)</label>
+                <input type="number" name="note" id="note" min="0" max="20" step="0.01" required>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'liste_notes' %}" class="btn-cancel">Annuler</a>
+            <button type="submit" class="btn-save">Enregistrer</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

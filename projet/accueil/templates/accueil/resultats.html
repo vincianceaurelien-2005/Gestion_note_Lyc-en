@@ -1,0 +1,47 @@
+{% extends 'accueil/base.html' %}
+
+{% block title %}
+Résultats
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Résultats</h1>
+        <p>Moyenne pondérée par élève</p>
+    </div>
+</div>
+
+<div class="table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Élève</th>
+                <th>Classe</th>
+                <th>Moyenne</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in rows %}
+            <tr>
+                <td>{{ r.eleve }}</td>
+                <td>{{ r.eleve.classe }}</td>
+                <td>
+                    {% if r.moyenne is not None %}
+                        {{ r.moyenne }}/20
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align:center;">Aucun élève</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

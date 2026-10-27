@@ -1,0 +1,161 @@
+```html
+{% extends 'accueil/base.html' %}
+
+{% load static %}
+
+{% block title %}
+Ajouter une matière
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Ajouter une matière</h1>
+        <p>Enregistrer une nouvelle matière</p>
+    </div>
+
+</div>
+
+
+<div class="form-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {% if erreur %}
+            <div class="form-error">
+                {{ erreur }}
+            </div>
+        {% endif %}
+
+
+        <div class="form-grid">
+
+
+            <!-- CODE MATIÈRE -->
+
+            <div class="form-group">
+
+                <label for="code">
+                    Code matière
+                </label>
+
+                <input
+                    type="text"
+                    id="code"
+                    name="code"
+                    placeholder="Ex : MAT001"
+                    required
+                >
+
+            </div>
+
+
+            <!-- NOM MATIÈRE -->
+
+            <div class="form-group">
+
+                <label for="nom">
+                    Nom de la matière
+                </label>
+
+                <input
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    placeholder="Ex : Mathématiques"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CLASSE -->
+
+            <div class="form-group">
+
+                <label for="classe">
+                    Classe
+                </label>
+
+                <select
+                    id="classe"
+                    name="classe"
+                    required
+                >
+
+                    <option value="">
+                        Sélectionner une classe
+                    </option>
+
+                    {% for classe in classes %}
+
+                        <option value="{{ classe.id }}">
+                            {{ classe.nom }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- COEFFICIENT -->
+
+            <div class="form-group">
+
+                <label for="coefficient">
+                    Coefficient
+                </label>
+
+                <input
+                    type="number"
+                    id="coefficient"
+                    name="coefficient"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Ex : 4"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'liste_matieres' %}"
+                class="btn-cancel"
+            >
+                Annuler
+            </a>
+
+            <button
+                type="submit"
+                class="btn-save"
+            >
+                Enregistrer
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+```

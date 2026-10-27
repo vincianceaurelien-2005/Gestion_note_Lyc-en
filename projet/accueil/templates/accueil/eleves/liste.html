@@ -1,0 +1,254 @@
+```html
+{% extends 'accueil/base.html' %}
+
+{% block title %}
+Élèves
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Élèves</h1>
+
+        <p>
+            Gestion et suivi des élèves
+        </p>
+    </div>
+
+    <a class="btn-add" href="{% url 'ajouter_eleves' %}">
+        + Ajouter un élève
+    </a>
+
+</div>
+
+
+<!-- RECHERCHE -->
+
+<div class="filter-container">
+
+    <form method="GET" class="search-box">
+
+        <span>🔍</span>
+
+        <input
+            type="text"
+            name="recherche"
+            value="{{ recherche }}"
+            placeholder="Rechercher un élève..."
+        >
+
+    </form>
+
+
+    <form method="GET">
+
+        <select name="classe" onchange="this.form.submit()">
+
+            <option value="">
+                Toutes les classes
+            </option>
+
+            {% for classe in classes %}
+
+                <option
+                    value="{{ classe.id }}"
+                    {% if classe_selectionnee == classe.id|stringformat:"s" %}
+                        selected
+                    {% endif %}
+                >
+                    {{ classe.nom }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </form>
+
+</div>
+
+
+<!-- LISTE -->
+
+<div class="table-card">
+
+    <div class="table-header">
+
+        <div>
+
+            <h2>
+                Liste des élèves
+            </h2>
+
+            <span>
+                {{ total_eleves }} élève{{ total_eleves|pluralize }} enregistré{{ total_eleves|pluralize }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>N°</th>
+                    <th>Matricule</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Classe</th>
+                    <th>Sexe</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for eleve in eleves %}
+
+                <tr>
+
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+
+                    <td>
+                        {{ eleve.matricule }}
+                    </td>
+
+                    <td>
+                        {{ eleve.nom }}
+                    </td>
+
+                    <td>
+                        {{ eleve.prenom }}
+                    </td>
+
+                    <td>
+                        {{ eleve.classe.nom }}
+                    </td>
+
+                    <td>
+                        {{ eleve.sexe }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            class="action"
+                            href="{% url 'detail_eleve' eleve.id %}"
+                            title="Voir"
+                        >
+                            👁️
+                        </a>
+
+                        <a
+                            class="action"
+                            href="{% url 'modifier_eleve' eleve.id %}"
+                            title="Modifier"
+                        >
+                            ✏️
+                        </a>
+
+                        <form
+                            method="POST"
+                            action="{% url 'supprimer_eleve' eleve.id %}"
+                            style="display:inline;"
+                            onsubmit="return confirm('Voulez-vous vraiment supprimer cet élève ?');"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="action"
+                                title="Supprimer"
+                            >
+                                🗑️
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="7" style="text-align:center; padding:30px;">
+
+                        Aucun élève trouvé.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- PAGINATION -->
+
+    {% if eleves.has_other_pages %}
+
+    <div class="pagination">
+
+        {% if eleves.has_previous %}
+
+            <a href="?page={{ eleves.previous_page_number }}">
+                ‹
+            </a>
+
+        {% endif %}
+
+
+        {% for num in eleves.paginator.page_range %}
+
+            {% if eleves.number == num %}
+
+                <button class="active">
+                    {{ num }}
+                </button>
+
+            {% else %}
+
+                <a href="?page={{ num }}">
+                    {{ num }}
+                </a>
+
+            {% endif %}
+
+        {% endfor %}
+
+
+        {% if eleves.has_next %}
+
+            <a href="?page={{ eleves.next_page_number }}">
+                ›
+            </a>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+```

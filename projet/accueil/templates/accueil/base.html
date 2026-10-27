@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestion des notes{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">🎓</span>
+            <h2>Gestion Notes</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+                <span>🏠</span> Accueil
+            </a>
+            <a href="{% url 'liste_eleves' %}" class="{% if 'eleves' in request.path %}active{% endif %}">
+                <span>👨‍🎓</span> Élèves
+            </a>
+            <a href="{% url 'liste_matieres' %}" class="{% if 'matieres' in request.path %}active{% endif %}">
+                <span>📚</span> Matières
+            </a>
+            <a href="{% url 'liste_notes' %}" class="{% if 'notes' in request.path %}active{% endif %}">
+                <span>📝</span> Notes
+            </a>
+            <a href="{% url 'resultats' %}" class="{% if 'resultats' in request.path %}active{% endif %}">
+                <span>📊</span> Résultats
+            </a>
+            <a href="{% url 'parametres' %}" class="{% if 'parametres' in request.path %}active{% endif %}">
+                <span>⚙️</span> Paramètres
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <span class="user-avatar">👤</span>
+                <span class="user-name">{{ request.session.nom_complet|default:request.session.username }}</span>
+            </div>
+            <a href="{% url 'logout' %}" class="btn-logout">Déconnexion</a>
+        </div>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

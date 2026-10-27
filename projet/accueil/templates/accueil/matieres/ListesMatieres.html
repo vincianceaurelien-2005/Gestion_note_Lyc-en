@@ -1,0 +1,257 @@
+```html
+{% extends 'accueil/base.html' %}
+
+{% block title %}
+Matières
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Matières</h1>
+
+        <p>
+            Gestion des matières scolaires
+        </p>
+
+    </div>
+
+    <a class="btn-add" href="{% url 'ajouter_matieres' %}">
+        + Ajouter une matière
+    </a>
+
+</div>
+
+
+<!-- RECHERCHE -->
+
+<div class="filter-container">
+
+    <div class="search-box">
+
+        <span>🔍</span>
+
+        <form method="GET">
+
+            <input
+                type="text"
+                name="recherche"
+                value="{{ recherche }}"
+                placeholder="Rechercher une matière..."
+            >
+
+        </form>
+
+    </div>
+
+
+    <form method="GET">
+
+        <select
+            name="classe"
+            onchange="this.form.submit()"
+        >
+
+            <option value="">
+                Toutes les classes
+            </option>
+
+            {% for classe in classes %}
+
+                <option
+                    value="{{ classe.id }}"
+                    {% if classe_selectionnee == classe.id|stringformat:"s" %}
+                        selected
+                    {% endif %}
+                >
+                    {{ classe.nom }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </form>
+
+</div>
+
+
+<!-- LISTE -->
+
+<div class="table-card">
+
+    <div class="table-header">
+
+        <div>
+
+            <h2>
+                Liste des matières
+            </h2>
+
+            <span>
+                {{ total_matieres }} matière{{ total_matieres|pluralize }}
+                enregistrée{{ total_matieres|pluralize }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>N°</th>
+
+                    <th>Code</th>
+
+                    <th>Matière</th>
+
+                    <th>Classe</th>
+
+                    <th>Coefficient</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for matiere in matieres %}
+
+                <tr>
+
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+
+                    <td>
+                        {{ matiere.code }}
+                    </td>
+
+                    <td>
+                        {{ matiere.nom }}
+                    </td>
+
+                    <td>
+                        {{ matiere.classe.nom }}
+                    </td>
+
+                    <td>
+                        {{ matiere.coefficient }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            class="action"
+                            href="{% url 'detail_matiere' matiere.id %}"
+                            title="Voir détail" class="action"
+                        >
+                            👁️
+                        </a>
+
+                        <a
+                            class="action"
+                            href="{% url 'modifier_matiere' matiere.id %}"
+                            title="Modifier"
+                        >
+                            ✏️
+                        </a>
+
+                        <button
+                            type="button"
+                            class="action"
+                            title="Supprimer"
+                        >
+                            🗑️
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        style="text-align:center; padding:30px;"
+                    >
+                        Aucune matière trouvée.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- PAGINATION -->
+
+    {% if matieres.has_other_pages %}
+
+    <div class="pagination">
+
+        {% if matieres.has_previous %}
+
+            <a href="?page={{ matieres.previous_page_number }}">
+                ‹
+            </a>
+
+        {% endif %}
+
+
+        {% for num in matieres.paginator.page_range %}
+
+            {% if matieres.number == num %}
+
+                <button class="active">
+                    {{ num }}
+                </button>
+
+            {% else %}
+
+                <a href="?page={{ num }}">
+                    {{ num }}
+                </a>
+
+            {% endif %}
+
+        {% endfor %}
+
+
+        {% if matieres.has_next %}
+
+            <a href="?page={{ matieres.next_page_number }}">
+                ›
+            </a>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+```

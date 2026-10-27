@@ -1,0 +1,125 @@
+{% extends 'accueil/base.html' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Paramètres</h1>
+        <p>Établissement, profil et année scolaire</p>
+    </div>
+</div>
+
+{% if message_ok %}
+<div class="alert alert-success">{{ message_ok }}</div>
+{% endif %}
+{% if erreur %}
+<div class="alert alert-error">{{ erreur }}</div>
+{% endif %}
+
+<div class="params-grid">
+
+    <!-- ÉTABLISSEMENT -->
+    <div class="form-card">
+        <h2 class="card-title">🏫 Établissement</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="etablissement">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nom de l'établissement</label>
+                    <input type="text" name="nom_etab" value="{{ etab.nom }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Adresse</label>
+                    <input type="text" name="adresse" value="{{ etab.adresse }}">
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="text" name="telephone" value="{{ etab.telephone }}">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{ etab.email }}">
+                </div>
+                <div class="form-group full">
+                    <label>Devise / Slogan</label>
+                    <input type="text" name="devise" value="{{ etab.devise }}">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- PROFIL -->
+    <div class="form-card">
+        <h2 class="card-title">👤 Mon profil</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="profil">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" value="{{ user.nom_utilisateur }}" readonly disabled>
+                </div>
+                <div class="form-group">
+                    <label>Nom complet</label>
+                    <input type="text" name="nom_complet" value="{{ user.nom_complet }}">
+                </div>
+                <div class="form-group">
+                    <label>Contact (téléphone / email)</label>
+                    <input type="text" name="contact" value="{{ user.contact }}">
+                </div>
+                <div class="form-group">
+                    <label>Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                    <input type="password" name="nouveau_password" placeholder="••••••••">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Mettre à jour le profil</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ANNÉE SCOLAIRE -->
+    <div class="form-card full-width">
+        <h2 class="card-title">📅 Année scolaire</h2>
+        <form method="post" style="margin-bottom: 20px;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="annee">
+            <div class="form-group">
+                <label>Année active</label>
+                <select name="annee_active">
+                    {% for a in annees %}
+                    <option value="{{ a.id }}" {% if a.active %}selected{% endif %}>
+                        {{ a.libelle }} {% if a.active %}(active){% endif %}
+                    </option>
+                    {% empty %}
+                    <option value="">Aucune année</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Activer cette année</button>
+            </div>
+        </form>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="ajouter_annee">
+            <div class="form-group">
+                <label>Ajouter une nouvelle année</label>
+                <div style="display:flex;gap:10px;">
+                    <input type="text" name="nouvelle_annee" placeholder="Ex: 2026-2027" style="flex:1;">
+                    <button type="submit" class="btn-save">Ajouter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

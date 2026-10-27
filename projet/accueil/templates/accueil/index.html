@@ -1,0 +1,198 @@
+{% extends 'accueil/base.html' %}
+
+{% block title %}
+Accueil - Gestion des notes
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            Tableau de bord
+        </h1>
+
+        <p>
+            Bienvenue dans votre application de gestion des notes.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================
+     CARTES STATISTIQUES
+=========================================== -->
+
+<div class="cards">
+
+
+    <div class="card">
+
+        <h3>
+            👨‍🎓 Élèves
+        </h3>
+
+        <p>
+            {{ total_eleves }}
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            📚 Matières
+        </h3>
+
+        <p>
+            {{ total_matieres }}
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            📝 Notes
+        </h3>
+
+        <p>
+            {{ total_notes }}
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            🏫 Classes
+        </h3>
+
+        <p>
+            {{ total_classes }}
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>
+            📊 Moyenne générale
+        </h3>
+
+        <p>
+            {{ moyenne_generale }}/20
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<!-- ==========================================
+     DERNIERS ÉLÈVES
+=========================================== -->
+
+<div class="table-card">
+
+    <div class="table-header">
+
+        <div>
+
+            <h2>
+                Derniers élèves enregistrés
+            </h2>
+
+            <span>
+                Les 5 derniers élèves
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>N°</th>
+
+                    <th>Matricule</th>
+
+                    <th>Nom</th>
+
+                    <th>Prénom</th>
+
+                    <th>Classe</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for eleve in derniers_eleves %}
+
+                <tr>
+
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+
+                    <td>
+                        {{ eleve.matricule }}
+                    </td>
+
+                    <td>
+                        {{ eleve.nom }}
+                    </td>
+
+                    <td>
+                        {{ eleve.prenom }}
+                    </td>
+
+                    <td>
+                        {{ eleve.classe.nom }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5"
+                        style="text-align:center; padding:30px;">
+
+                        Aucun élève enregistré.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

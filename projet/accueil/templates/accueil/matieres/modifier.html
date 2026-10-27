@@ -1,0 +1,63 @@
+{% extends 'accueil/base.html' %}
+
+{% block title %}
+Modifier une matière
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Modifier une matière</h1>
+        <p>{{ matiere.nom }}</p>
+    </div>
+</div>
+
+{% if erreur %}
+<div class="alert alert-error" style="background:#fee;color:#c00;padding:12px;border-radius:6px;margin-bottom:16px;">
+    {{ erreur }}
+</div>
+{% endif %}
+
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="code">Code matière</label>
+                <input type="text" id="code" name="code" value="{{ matiere.code }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nom">Nom matière</label>
+                <input type="text" id="nom" name="nom" value="{{ matiere.nom }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="coefficient">Coefficient</label>
+                <input type="number" id="coefficient" name="coefficient" value="{{ matiere.coefficient }}" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="classe">Classe</label>
+                <select id="classe" name="classe" required>
+                    {% for c in classes %}
+                    <option value="{{ c.id }}" {% if matiere.classe_id == c.id %}selected{% endif %}>
+                        {{ c.nom }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'detail_matiere' matiere.id %}" class="btn-cancel">Annuler</a>
+            <button type="submit" class="btn-save">Enregistrer</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
